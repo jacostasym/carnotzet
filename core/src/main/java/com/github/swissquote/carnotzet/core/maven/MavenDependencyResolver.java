@@ -158,6 +158,11 @@ public class MavenDependencyResolver {
 		InvocationRequest request = new DefaultInvocationRequest();
 		request.setBatchMode(true);
 		request.setGoals(goals);
+		String userSettingsFilePath = System.getenv("MAVEN_SETTINGS");
+		if (userSettingsFilePath != null) {
+			log.debug("Using custom user settings %s", userSettingsFilePath);
+			request.setUserSettingsFile(Paths.get(userSettingsFilePath).toFile());
+		}
 		// reset MAVEN_DEBUG_OPTS to allow debugging without blocking the invoker calls
 		request.addShellEnvironment("MAVEN_DEBUG_OPTS", "");
 		InvocationOutputHandler outHandler = outputHandler;
